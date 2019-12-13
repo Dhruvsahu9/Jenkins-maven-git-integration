@@ -1,0 +1,10 @@
+node{
+          stage('dhruv checkout')
+          {
+          git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration
+          }
+          stage('Compile-Package')
+          {
+          sh 'mvm package'
+          }
+}
