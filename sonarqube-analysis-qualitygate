@@ -1,1 +1,27 @@
-
+node{
+          stage('dhruv checkout')
+          {
+          git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration'
+          }
+          stage('compile package')
+          {
+                    def mav=tool name: 'maven3', type: 'maven'
+                    sh "${mav}/bin/mvn package"
+          }
+          stage("Quality Gate"){
+          timeout(time: 1, unit: 'HOURS') {
+              def qg = waitForQualityGate()
+              if (qg.status != 'OK') {
+                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              }
+          }
+      }  
+          stage('Email notification')
+          {
+                    mail bcc: '', body: '''Hi welcome to jenkins email alerts
+             thanks
+hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'awsconsole.cloudcomputing@gmail.com'
+          }
+          
+          
+}
