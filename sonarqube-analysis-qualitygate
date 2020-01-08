@@ -6,8 +6,11 @@ node{
           stage('compile package')
           {
                     def mav=tool name: 'maven3', type: 'maven'
-                    sh "${mav}/bin/mvn package"
-          }
+                    withSonarQubeEnv('sonar_scanner'){
+                    sh "${mav}/bin/mvn sonar:sonar"
+                    }
+         
+                    
           stage("Quality Gate"){
           timeout(time: 1, unit: 'HOURS') {
               def qg = waitForQualityGate()
@@ -23,5 +26,13 @@ node{
 hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'awsconsole.cloudcomputing@gmail.com'
           }
           
+          stage('slack notification')
+          {
+          slackSend baseUrl: 'https://hooks.slack.com/services/',
+          channel: '#jenkins-pipeline-demo',
+          color: 'good',
+          message: 'Welcome to jenkins',
+          Username: 'awscloudhq'
+          }
           
 }
