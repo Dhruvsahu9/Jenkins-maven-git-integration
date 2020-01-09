@@ -16,23 +16,12 @@ node{
               def qg = waitForQualityGate()
               if (qg.status != 'OK') {
                   error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                   slackSend baseUrl: 'https://hooks.slack.com/services/',
+                channel: '#jenkins-pipeline-demo',
+                 color: 'good',
+                message: 'Welcome to jenkins',
+                Username: 'awscloudhq'
               }
           }
       }  
-          stage('Email notification')
-          {
-                    mail bcc: '', body: '''Hi welcome to jenkins email alerts
-             thanks
-hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'awsconsole.cloudcomputing@gmail.com'
-          }
-          
-          stage('slack notification')
-          {
-          slackSend baseUrl: 'https://hooks.slack.com/services/',
-          channel: '#jenkins-pipeline-demo',
-          color: 'good',
-          message: 'Welcome to jenkins',
-          Username: 'awscloudhq'
-          }
-          
-}
+ }
