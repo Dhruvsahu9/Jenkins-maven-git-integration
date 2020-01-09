@@ -1,0 +1,35 @@
+pipeline{
+stages
+{
+stage("wish hi")
+{
+steps{
+echo "hi i am new to jenkins"
+}
+}
+stage('compile package')
+          {
+                  steps{
+                  def mav=tool name: 'maven3', type: 'maven'
+                    sh "${mav}/bin/mvn package"
+                    }
+          }
+          stage('Email notification')
+          {
+          
+                 steps{
+                    mail bcc: '', body: '''Hi welcome to jenkins email alerts
+             thanks
+hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'awsconsole.cloudcomputing@gmail.com'
+             }
+          }
+          
+          stage('slack notification')
+          {
+                 steps{
+             slackSend baseUrl: 'https://hooks.slack.com/services/', channel: '#jenkins-pipeline-demo', color: 'good', tokenCredentialId: 'slack-demo', username: 'awscloudhq'      
+            }
+          }
+
+}
+}
