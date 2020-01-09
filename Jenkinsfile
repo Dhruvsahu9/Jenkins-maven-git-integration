@@ -1,5 +1,5 @@
 node{
-          
+         
           stage('compile package')
           {
                     def mav=tool name: 'maven3', type: 'maven'
