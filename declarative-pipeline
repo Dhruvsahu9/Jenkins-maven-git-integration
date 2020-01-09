@@ -1,5 +1,8 @@
 pipeline{
 agent any
+enviroment{
+PATH="/opt/apache-maven-3.6.3/bin:$PATH"
+}
 stages
 {
 stage("wish hi")
@@ -11,8 +14,8 @@ echo "hi i am new to jenkins"
 stage('compile package')
           {
                   steps{
-                  def mav=tool name: 'maven3', type: 'maven'
-                    sh "${mav}/bin/mvn package"
+                  
+                    sh "mvn  clean package"
                     }
           }
           stage('Email notification')
