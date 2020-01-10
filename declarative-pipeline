@@ -6,9 +6,11 @@ PATH="/opt/apache-maven-3.6.3/bin:$PATH"
 stages
 {
 
-stage('scm checkout')
+stage("scm checkout")
 {
+steps{
 git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration/'
+}
 }
 stage("wish hi")
 {
