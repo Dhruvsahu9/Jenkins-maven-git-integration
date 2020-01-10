@@ -1,0 +1,34 @@
+node{
+        
+		stage('SCM Checkout')
+         {
+                  git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration/'
+         }
+         
+          stage('compile package')
+          {
+                    def mav=tool name: 'maven3', type: 'maven'
+                    sh "${mav}/bin/mvn package"
+          }
+          stage('Deploy to tomcat')
+          {
+          
+          sshagent(['tomcat']) {
+    
+ sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@10.200.0.110 tomcat8/webapps/'
+    }
+          
+          
+          }
+          stage('Email notification')
+          {
+                    mail bcc: '', body: '''Hi welcome to jenkins email alerts
+             thanks
+hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'awsconsole.cloudcomputing@gmail.com'
+          }
+          
+          stage('slack notification')
+          {
+             slackSend baseUrl: 'https://hooks.slack.com/services/', channel: '#jenkins-pipeline-demo', color: 'good', tokenCredentialId: 'slack-demo', username: 'awscloudhq'      
+          }
+}
