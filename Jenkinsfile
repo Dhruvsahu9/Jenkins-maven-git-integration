@@ -3,8 +3,8 @@ node{
           stage('compile package')
           {
                     
-                    def mav=tool name: 'maven3', type: 'maven'
-                    sh "${mav}/bin/mvn package"
+                    def dav=tool name: 'maven3', type: 'maven'
+                    sh "${dav}/bin/mvn package"
           }
           stage('Email notification')
           {
