@@ -2,6 +2,8 @@ node{
          
           stage('compile package')
           {
+                    cd pom.xml
+                    mvn clean install
                     def mav=tool name: 'maven3', type: 'maven'
                     sh "${mav}/bin/mvn package"
           }
