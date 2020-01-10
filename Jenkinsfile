@@ -1,8 +1,5 @@
 node{
-         stage('SCM Checkout')
-         {
-                  git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration/'
-         }
+         
          
           stage('compile package')
           {
