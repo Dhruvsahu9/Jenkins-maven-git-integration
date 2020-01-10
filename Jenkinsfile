@@ -1,7 +1,9 @@
 node{
-         
-         
-          stage('compile package')
+         stage('SCM Checkout')
+         {
+                  git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration/'
+         }
+        stage('compile package')
           {
                     
                     def dav=tool name: 'maven3', type: 'maven'
