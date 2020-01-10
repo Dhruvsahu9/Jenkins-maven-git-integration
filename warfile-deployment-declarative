@@ -1,1 +1,69 @@
+pipeline{
+agent any
+environment{
+PATH="/opt/apache-maven-3.6.3/bin:$PATH"
+}
+stages
+{
 
+stage("scm checkout")
+{
+steps{
+git 'https://github.com/Dhruvsahu9/Jenkins-maven-git-integration/'
+}
+}
+
+stage('compile package')
+          {
+                  steps{
+                  
+                    sh "mvn  clean package"
+                    sh "mv target/*.war  target/myweb.war"
+                    }
+          }
+          
+stage("deploy-dev")
+{
+steps{
+sshagent(['tomcat-dev']) {
+    // some block
+sh """
+ scp -o StrictHostKeyChecking=no target/myweb.war ec2-user@10.200.0.110:/opt/tomcat8/webapps/
+ ssh ec2-user@10.200.0.110 /opt/tomcat8/bin/shutdown.sh
+  ssh ec2-user@10.200.0.110 /opt/tomcat8/bin/startup.sh
+"""
+
+
+}
+
+
+
+}
+         
+}
+stage("wish hi")
+{
+steps{
+echo "hi i am new to jenkins"
+}
+}
+
+          stage('Email notification')
+          {
+          
+                 steps{
+                    mail bcc: '', body: '''Hi welcome to jenkins email alerts
+             thanks
+hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'awsconsole.cloudcomputing@gmail.com'
+             }
+          }
+          
+          stage('slack notification')
+          {
+                 steps{
+             slackSend baseUrl: 'https://hooks.slack.com/services/', channel: '#jenkins-pipeline-demo', color: 'good', tokenCredentialId: 'slack-demo', username: 'awscloudhq'      
+            }
+          }
+
+}
+}
